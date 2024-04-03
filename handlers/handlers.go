@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"gin-test/utils/errs"
-	"net/http"
+
 	"github.com/gin-gonic/gin"
+	// "github.com/golodash/galidator"
+	"net/http"
 	"strconv"
-	"github.com/go-playground/validator"
 )
 
 func HandleError(ctx *gin.Context, err error) {
@@ -32,14 +33,17 @@ func GetIntId(ctx *gin.Context) (int, error) {
 	return id, nil
 }
 
-func NewProductTypeValidator() *ProductTypeValidator {
-	return &ProductTypeValidator{validator: validator.New()}
-}
+// var (
+// 	g = galidator.New()
+// )
 
-type ProductTypeValidator struct {
-	validator *validator.Validate
-}
-
-func (p *ProductTypeValidator) Validate(i interface{}) error {
-	return p.validator.Struct(i)
-}
+// func handleValidationError(c *gin.Context, err error) {
+// 	var errors []string
+// 	for _, v := range err.(validator.ValidationErrors) {
+// 		// Create your custom error message string
+// 		errorMessage := fmt.Sprintf("Field %s %s", v.Field(), v.ActualTag())
+// 		errors = append(errors, errorMessage)
+// 	}
+// 	// Respond with custom error messages
+// 	c.JSON(http.StatusBadRequest, gin.H{"errors": errors})
+// }

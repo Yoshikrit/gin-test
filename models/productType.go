@@ -1,7 +1,7 @@
 package models
 
 import (
-    
+
 )
 
 type ProductTypeEntity struct {
@@ -20,11 +20,11 @@ type ProductType struct {
 }
 
 type ProductTypeCreate struct {
-    Id     		 int    	`json:"ProdType_Id"      validate:"required,gt=0"`
-    Name         string 	`json:"ProdType_Name"    validate:"required"`
+    Id     		 int    	`json:"ProdType_Id"      binding:"required,gte=0"`
+    Name         string 	`json:"ProdType_Name"    binding:"required,max=40"`
 }
 
 type ProductTypeUpdate struct {
-    Name         string 	`json:"ProdType_Name"    validate:"required"`
+    Name         string 	`json:"ProdType_Name"    binding:"required,max=40"`
 }
- 
+

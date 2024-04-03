@@ -21,3 +21,9 @@ func SetupProductTypeRoutes(g *gin.RouterGroup) {
 	g.DELETE("/:id", productTypeHandler.DeleteProductTypeByID)
 	g.GET("/count", productTypeHandler.GetProductTypeCount)
 }
+
+func SetupHealth(g *gin.RouterGroup) {
+	healthHandler := handlers.NewHealthHandler()
+	
+	g.GET("/health", healthHandler.CheckHealth)
+}
