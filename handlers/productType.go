@@ -1,14 +1,13 @@
 package handlers
 
 import (
-    "net/http"
-	"fmt"
 	"gin-test/models"
 	"gin-test/services"
 	"gin-test/utils/logs"
 	"gin-test/utils/errs"
 
 	"github.com/gin-gonic/gin"
+    "net/http"
 )
 
 type productTypeHandler struct {
@@ -20,15 +19,14 @@ func NewProductTypeHandler(productTypeSrv services.ProductTypeService) productTy
 }
 
 func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
-	prodTypeReq := new(models.ProductTypeCreate)
-	if err := ctx.ShouldBindJSON(prodTypeReq); err != nil {
+	var prodTypeReq models.ProductTypeCreate
+	if err := ctx.ShouldBindJSON(&prodTypeReq); err != nil {
 		logs.Error(err.Error())
 		HandleError(ctx, errs.NewBadRequestError(err.Error()))
 		return 
 	}
-	fmt.Println(prodTypeReq.Id)
 
-	prodTypeRes, err := h.productTypeSrv.CreateProductType(prodTypeReq)
+	prodTypeRes, err := h.productTypeSrv.CreateProductType(&prodTypeReq)
 	if err != nil {
 		logs.Error(err.Error())
 		HandleError(ctx, err)
@@ -36,7 +34,10 @@ func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	}
 
 	logs.Info("Handler: Create ProductType Successfully")
-	ctx.JSON(http.StatusCreated, prodTypeRes)
+	ctx.JSON(http.StatusCreated, gin.H{
+		"code":    http.StatusCreated,
+		"message": prodTypeRes,
+	})
 }
 
 func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
@@ -48,7 +49,10 @@ func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 	}
 
 	logs.Info("Handler: Get ProductTypes Successfully")
-	ctx.JSON(http.StatusOK, prodTypesRes)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": prodTypesRes,
+	})
 }
 
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
@@ -67,7 +71,10 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	}
 
 	logs.Info("Handler: Get ProductType Successfully")
-	ctx.JSON(http.StatusOK, prodTypeRes)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": prodTypeRes,
+	})
 }
 
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
@@ -93,7 +100,10 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	}
 
 	logs.Info("Handler: Update ProductType Successfully")
-	ctx.JSON(http.StatusOK, prodTypeRes)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": prodTypeRes,
+	})
 }
 
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
@@ -111,9 +121,10 @@ func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	}
 
 	logs.Info("Handler: Delete ProductType Successfully")
-	ctx.JSON(http.StatusOK, map[string]interface{}{
-        "message": "Deleted Successfully",
-    })
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Delete ProductType Successfully",
+	})
 }
 
 func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
@@ -125,5 +136,8 @@ func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
 	}
 
 	logs.Info("Handler: Get ProductType's Count Successfully")
-	ctx.JSON(http.StatusOK, count)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": count,
+	})
 }

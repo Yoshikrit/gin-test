@@ -10,5 +10,5 @@
 
 go.work
 
-.env.prod
-.env.dev
+# .env.prod
+# .env.dev

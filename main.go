@@ -3,9 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/penglongli/gin-metrics/ginmetrics"
-	"net/http"
 	"os"
-
+	
 	"gin-test/configs"
 	"gin-test/models"
 	"gin-test/routes"
@@ -37,14 +36,10 @@ func main() {
 	}
 
 	//routes
+
 	productTypeGroup := r.Group("/producttype")
 	routes.SetupProductTypeRoutes(productTypeGroup)
-
-	r.GET("/health", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, map[string]string{
-			"message": "Service : OK",
-		})
-	})
+	routes.SetupHealth(productTypeGroup)
 
 	r.Run(":" + os.Getenv("SERVER_PORT"))
 }

@@ -6,120 +6,88 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"encoding/json"
-	// "errors"
+	// "encoding/json"
+	"errors"
+	"strings"
 
 	"gin-test/handlers"
 	// "gin-test/models"
 	"gin-test/utils/errs"
 )
 
-func SetUpRouter() *gin.Engine{
-    router := gin.New()
-    return router
-}
-
 func TestHandleError(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 	t.Run("test case : pass", func(t *testing.T) {
-        router := SetUpRouter()
-		
-		appErr := errs.AppError{Code: http.StatusBadRequest, Message: "Bad Request"}
-		router.GET("/", func(c *gin.Context) {
-			handlers.HandleError(c, appErr)
-		})
-	
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
-	
-		w := httptest.NewRecorder()
-		router.ServeHTTP(w, req)
-	
-		assert.Equal(t, http.StatusBadRequest, w.Code)
-	
-		var responseBody map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &responseBody)
-	
-		if err != nil {
-			t.Errorf("Error unmarshalling response body: %v", err)
-		}
-	
-		expectedBody := map[string]interface{}{"code": 400, "message": "Bad Request"}
-		assert.Equal(t, expectedBody, responseBody)
+		rec := httptest.NewRecorder()
+
+		c, _ := gin.CreateTestContext(rec)
+		c.Request = req
+
+		appErr := errs.AppError{Code: http.StatusBadRequest, Message: "Bad Request"}
+		handlers.HandleError(c, appErr)
+
+		assert.Equal(t, http.StatusBadRequest, rec.Code)
+
+		expectedBody := `{"code":400,"message":"Bad Request"}`
+		actualBody := strings.TrimSpace(rec.Body.String())
+
+		assert.Equal(t, expectedBody, actualBody)
 	})
 
-	// t.Run("test case : fail", func(t *testing.T) {
-	// 	ctx := gin.New()
+	t.Run("test case : fail", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		rec := httptest.NewRecorder()
 
-	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	rec := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(rec)
+		c.Request = req
 
-	// 	appErr := errors.New("")
+		appErr := errors.New("")
 
-	// 	handlers.HandleError(ctx.NewContext(req, rec), appErr)
+		handlers.HandleError(c, appErr)
 
-	// 	assert.Equal(t, http.StatusInternalServerError, rec.Code)
+		assert.Equal(t, http.StatusInternalServerError, rec.Code)
 
-	// 	expectedBody := `{"code":500,"message":"Interval Server Error"}`
-	// 	actualBody := strings.TrimSpace(rec.Body.String())
+		expectedBody := `{"code":500,"message":"Internal Server Error"}`
+		actualBody := strings.TrimSpace(rec.Body.String())
 
-	// 	assert.Equal(t, expectedBody, actualBody)
-	// })
+		assert.Equal(t, expectedBody, actualBody)
+	})
 }
 
-// func TestGetIntId(t *testing.T) {
-	// ctx := gin.New()
+func TestGetIntId(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 
-	// t.Run("test case : pass valid integer id", func(t *testing.T) {
-	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	rec := httptest.NewRecorder()
-	// 	c := ctx.NewContext(req, rec)
-	// 	c.SetParamNames("id")
-	// 	c.SetParamValues("123")
+	t.Run("test case : pass valid integer id", func(t *testing.T) {
+		rec := httptest.NewRecorder()
 
-	// 	id, err := handlers.GetIntId(c)
+		c, _ := gin.CreateTestContext(rec)
+		c.Params = []gin.Param{{
+			Key:   "id",
+			Value: "123",
+		}}
 
-	// 	assert.NoError(t, err)
-	// 	assert.Equal(t, 123, id)
-	// })
+		id, err := handlers.GetIntId(c)
 
-	// t.Run("test case : invalid non-integer id", func(t *testing.T) {
-	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	rec := httptest.NewRecorder()
-	// 	c := ctx.NewContext(req, rec)
-	// 	c.SetParamNames("id")
-	// 	c.SetParamValues("a")
+		assert.NoError(t, err)
+		assert.Equal(t, 123, id)
+	})
 
-	// 	id, err := handlers.GetIntId(c)
+	t.Run("test case : invalid non-integer id", func(t *testing.T) {
+		rec := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(rec)
+		c.Params = []gin.Param{{
+			Key:   "id",
+			Value: "a",
+		}}
 
-	// 	expectedErr := errs.NewBadRequestError("Invalid id: a is not integer")
+		id, err := handlers.GetIntId(c)
 
-	// 	assert.Error(t, err)
-    //     assert.Equal(t, expectedErr, err)
-    //     assert.Equal(t, 0, id)
-	// })
-// }
+		expectedErr := errs.NewBadRequestError("Invalid id: a is not integer")
 
-// func TestProductTypeValidator_Validate(t *testing.T) {
-	// validator := handlers.NewProductTypeValidator()
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+		assert.Equal(t, 0, id)
+	})
+}
 
-	// t.Run("valid input", func(t *testing.T) {
-	// 	productTypeCreate := models.ProductTypeCreate{
-	// 		Id: 1,
-	// 		Name: "burger",
-	// 	}
-
-	// 	err := validator.Validate(productTypeCreate)
-
-	// 	assert.NoError(t, err)
-	// })
-
-	// t.Run("invalid input", func(t *testing.T) {
-	// 	invalidProductTypeCreate := models.ProductTypeCreate{
-	// 		Id: 1,
-	// 		Name: "",
-	// 	}
-
-	// 	err := validator.Validate(invalidProductTypeCreate)
-
-	// 	assert.Error(t, err)
-	// })
-// }
