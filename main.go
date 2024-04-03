@@ -13,9 +13,14 @@ import (
 func main() {
 	configs.LoadEnv()
 
+	if (os.Getenv("APP_ENV") == "production") {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
 	r := gin.New()
 
-	//middleware
+	// middleware
 	m := ginmetrics.GetMonitor()
 	m.SetMetricPath("/metrics")
 	m.SetSlowTime(10)
