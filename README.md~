@@ -1,1 +1,33 @@
-# gin-test
+# gin-test service
+First gin web framework project practice
+
+## Running the Application
+
+To run the application locally, you need to have Go installed on your machine.
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Yoshikrit/gin-test_go_project.git
+cd <project-directory>
+
+$env:APP_ENV = "development"
+go run main.go
+
+2. Test project:
+
+```bash
+
+go test  ./...                     
+go test gin-test/tests -v 
+go test gin-test/handlers -coverage
+
+3. build docker image:
+
+```bash
+docker build -t gin-test .
+
+4. run docker-compose.yml
+
+```bash
+docker-compose -f gintest-compose.yml up -d
