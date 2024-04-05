@@ -12,6 +12,7 @@ To run the application locally, you need to have Go installed on your machine.
 ```bash
 git clone https://github.com/Yoshikrit/gin-test_go_project.git
 cd <project-directory>
+```
 
 if you run in dev, you need to create docker-compose.yml for its own for postgresql database
 then run on main
