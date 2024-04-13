@@ -9,15 +9,19 @@ import (
 
 func LoadEnv() {
 	env := os.Getenv("APP_ENV")
+	envName := ""
 	if env == "development" {
-		env = "dev"
+		envName = "dev"
 	} else if env == "production" {
-		env = "prod"
+		envName = "prod"
+	} else {
+		logs.Error("Error no environment") 
 	}
 
-	filename := fmt.Sprintf(".env.%s", env)
+	filename := fmt.Sprintf(".env.%s", envName)
 
 	if err := godotenv.Load(filename); err != nil {
 		logs.Error("Error loading env file")
+		panic(err)
 	}
 }

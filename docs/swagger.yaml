@@ -1,0 +1,85 @@
+basePath: /
+host: localhost:8081
+info:
+  contact:
+    email: example@gmail.com
+    name: Walter White
+    url: https://twitter.com/example
+  description: Gin-Test API for testing.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Gin-Test API
+  version: "1.0"
+paths:
+  /producttype/:
+    get:
+      consumes:
+      - application/json
+      description: Get ProductType's count from database
+      produces:
+      - application/json
+      responses: {}
+      summary: Get ProductType's Count
+      tags:
+      - producttype
+    post:
+      consumes:
+      - application/json
+      description: Create ProductType to database
+      produces:
+      - application/json
+      responses: {}
+      summary: Create ProductType
+      tags:
+      - producttype
+  /producttype/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete ProductType from database
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete ProductType
+      tags:
+      - producttype
+    get:
+      consumes:
+      - application/json
+      description: Get ProductType from database
+      produces:
+      - application/json
+      responses: {}
+      summary: Get ProductType
+      tags:
+      - producttype
+    put:
+      consumes:
+      - application/json
+      description: Update ProductType from database
+      produces:
+      - application/json
+      responses: {}
+      summary: Update ProductType
+      tags:
+      - producttype
+  /producttype/health:
+    get:
+      consumes:
+      - application/json
+      description: Check if the service is up and running
+      produces:
+      - application/json
+      responses: {}
+      summary: Check health of the service
+      tags:
+      - health
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

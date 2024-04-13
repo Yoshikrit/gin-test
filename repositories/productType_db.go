@@ -58,28 +58,28 @@ func (r *productTypeRepositoryDB) GetById(id int) (*models.ProductTypeEntity, er
 }
 
 func (r *productTypeRepositoryDB) Update(id int, updateProdType *models.ProductTypeUpdate) (*models.ProductTypeEntity, error) {
-	prodTypeFromDB, err1 := r.GetById(id)
-	if err1 != nil {
-		return nil, errs.NewNotFoundError(err1.Error())
+	prodTypeFromDB, err := r.GetById(id)
+	if err != nil {
+		return nil, errs.NewNotFoundError(err.Error())
 	}
 
 	prodTypeFromDB.Name = updateProdType.Name
 
-	if err2 := r.db.Save(prodTypeFromDB).Error; err2 != nil {
-		return nil, errs.NewUnexpectedError(err2.Error())
+	if err := r.db.Save(prodTypeFromDB).Error; err != nil {
+		return nil, errs.NewUnexpectedError(err.Error())
 	}
 
 	return prodTypeFromDB, nil
 }
 
 func (r *productTypeRepositoryDB) DeleteById(id int) error {
-	_, err1 := r.GetById(id)
-	if err1 != nil {
-		return errs.NewNotFoundError(err1.Error())
+	_, err := r.GetById(id)
+	if err != nil {
+		return errs.NewNotFoundError(err.Error())
 	}
 
-	if err2 := r.db.Delete(&models.ProductTypeEntity{}, id).Error; err2 != nil {
-		return errs.NewUnexpectedError(err2.Error())
+	if err := r.db.Delete(&models.ProductTypeEntity{}, id).Error; err != nil {
+		return errs.NewUnexpectedError(err.Error())
 	}
 	return nil
 }

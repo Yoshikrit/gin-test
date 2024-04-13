@@ -22,7 +22,7 @@ func TestCheckHealth(t *testing.T) {
 		healthHandler := handlers.NewHealthHandler()
 		healthHandler.CheckHealth(c)
 
-		expectedBody := `{"code":200,"message":"Service ProductType : OK"}`
+		expectedBody := `{"code":200,"message":"ProductType Service : OK"}`
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, expectedBody, rec.Body.String())
 	})

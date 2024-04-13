@@ -4,13 +4,13 @@ import (
 	"gin-test/repositories"
 	"gin-test/services"
 	"gin-test/handlers"
-	"gin-test/configs"
 	
+	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupProductTypeRoutes(g *gin.RouterGroup) {
-	productTypeRepository := repositories.NewProductTypeRepositoryDB(configs.GetDB())
+func SetupProductTypeRoutes(g *gin.RouterGroup, db *gorm.DB) {
+	productTypeRepository := repositories.NewProductTypeRepositoryDB(db)
 	productTypeService := services.NewProductTypeService(productTypeRepository)
 	productTypeHandler := handlers.NewProductTypeHandler(productTypeService)
 

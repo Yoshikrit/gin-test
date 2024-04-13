@@ -15,4 +15,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /gin-test
 
 EXPOSE 8081
 
+USER nonroot:nonroot
+
 CMD ["/gin-test"]
