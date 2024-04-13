@@ -18,6 +18,13 @@ func NewProductTypeHandler(productTypeSrv services.ProductTypeService) productTy
 	return productTypeHandler{productTypeSrv: productTypeSrv}
 }
 
+// @Summary Create ProductType
+// @Description Create ProductType to database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @response 200 {string} string "Create ProductType Successfully"
+// @Router /producttype/ [post]
 func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	var prodTypeReq models.ProductTypeCreate
 	if err := ctx.ShouldBindJSON(&prodTypeReq); err != nil {
@@ -40,6 +47,13 @@ func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	})
 }
 
+// @Summary Get ProductTypes
+// @Description Get ProductTypes from database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @response 200 {string} string "Get ProductTypes Successfully"
+// @Router /producttype/ [get]
 func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 	prodTypesRes, err := h.productTypeSrv.GetProductTypes()
 	if err != nil {
@@ -54,7 +68,14 @@ func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 		"message": prodTypesRes,
 	})
 }
-
+// @Summary Get ProductType
+// @Description Get ProductType from database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @Param        id   path      int  true  "ProductType ID"
+// @response 200 {string} string "Get ProductType Successfully"
+// @Router /producttype/{id} [get]
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {
@@ -77,6 +98,14 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	})
 }
 
+// @Summary Update ProductType
+// @Description Update ProductType from database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @Param        id   path      int  true  "ProductType ID"
+// @response 200 {string} string "Update ProductType Successfully"
+// @Router /producttype/{id} [put]
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {
@@ -106,6 +135,14 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	})
 }
 
+// @Summary Delete ProductType
+// @Description Delete ProductType from database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @Param        id   path      int  true  "ProductType ID"
+// @response 200 {string} string "Delete ProductType Successfully"
+// @Router /producttype/{id} [delete]
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {
@@ -127,6 +164,13 @@ func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	})
 }
 
+// @Summary Get ProductType's Count
+// @Description Get ProductType's count from database
+// @Tags producttype
+// @Accept  json
+// @Produce  json
+// @response 200 {integer} int
+// @Router /producttype/count [get]
 func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
     count, err := h.productTypeSrv.GetProductTypeCount()
 	if err != nil {

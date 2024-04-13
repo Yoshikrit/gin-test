@@ -1,0 +1,142 @@
+basePath: /
+host: localhost:8081
+info:
+  contact:
+    email: example@gmail.com
+    name: Walter White
+    url: https://twitter.com/example
+  description: Gin-Test API for testing.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Gin-Test API
+  version: "1.0"
+paths:
+  /producttype/:
+    get:
+      consumes:
+      - application/json
+      description: Get ProductTypes from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get ProductTypes Successfully
+          schema:
+            type: string
+      summary: Get ProductTypes
+      tags:
+      - producttype
+    post:
+      consumes:
+      - application/json
+      description: Create ProductType to database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Create ProductType Successfully
+          schema:
+            type: string
+      summary: Create ProductType
+      tags:
+      - producttype
+  /producttype/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete ProductType Successfully
+          schema:
+            type: string
+      summary: Delete ProductType
+      tags:
+      - producttype
+    get:
+      consumes:
+      - application/json
+      description: Get ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get ProductType Successfully
+          schema:
+            type: string
+      summary: Get ProductType
+      tags:
+      - producttype
+    put:
+      consumes:
+      - application/json
+      description: Update ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update ProductType Successfully
+          schema:
+            type: string
+      summary: Update ProductType
+      tags:
+      - producttype
+  /producttype/count:
+    get:
+      consumes:
+      - application/json
+      description: Get ProductType's count from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: Get ProductType's Count
+      tags:
+      - producttype
+  /producttype/health:
+    get:
+      consumes:
+      - application/json
+      description: Check if the service is up and running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'ProductType Service : OK'
+          schema:
+            type: string
+      summary: Check health of the service
+      tags:
+      - health
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
