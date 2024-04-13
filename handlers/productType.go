@@ -23,7 +23,7 @@ func NewProductTypeHandler(productTypeSrv services.ProductTypeService) productTy
 // @Tags producttype
 // @Accept  json
 // @Produce  json
-// @Param        id   path      int  true  "ProductType ID"
+// @response 200 {string} string "Create ProductType Successfully"
 // @Router /producttype/ [post]
 func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	var prodTypeReq models.ProductTypeCreate
@@ -52,6 +52,7 @@ func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @response 200 {string} string "Get ProductTypes Successfully"
 // @Router /producttype/ [get]
 func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 	prodTypesRes, err := h.productTypeSrv.GetProductTypes()
@@ -73,7 +74,8 @@ func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 // @Accept  json
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
-// @Router /producttype/:id [get]
+// @response 200 {string} string "Get ProductType Successfully"
+// @Router /producttype/{id} [get]
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {
@@ -102,7 +104,8 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 // @Accept  json
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
-// @Router /producttype/:id [put]
+// @response 200 {string} string "Update ProductType Successfully"
+// @Router /producttype/{id} [put]
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {
@@ -139,7 +142,7 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
 // @response 200 {string} string "Delete ProductType Successfully"
-// @Router /producttype/:id [delete]
+// @Router /producttype/{id} [delete]
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
 	if err != nil {

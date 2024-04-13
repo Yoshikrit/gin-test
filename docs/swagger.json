@@ -33,7 +33,14 @@
                     "producttype"
                 ],
                 "summary": "Get ProductTypes",
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "Get ProductTypes Successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             },
             "post": {
                 "description": "Create ProductType to database",
@@ -47,89 +54,9 @@
                     "producttype"
                 ],
                 "summary": "Create ProductType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ProductType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/producttype/:id": {
-            "get": {
-                "description": "Get ProductType from database",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "producttype"
-                ],
-                "summary": "Get ProductType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ProductType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            },
-            "put": {
-                "description": "Update ProductType from database",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "producttype"
-                ],
-                "summary": "Update ProductType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ProductType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            },
-            "delete": {
-                "description": "Delete ProductType from database",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "producttype"
-                ],
-                "summary": "Delete ProductType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ProductType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "Delete ProductType Successfully",
+                        "description": "Create ProductType Successfully",
                         "schema": {
                             "type": "string"
                         }
@@ -176,6 +103,98 @@
                 "responses": {
                     "200": {
                         "description": "ProductType Service : OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/producttype/{id}": {
+            "get": {
+                "description": "Get ProductType from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "producttype"
+                ],
+                "summary": "Get ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get ProductType Successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update ProductType from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "producttype"
+                ],
+                "summary": "Update ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update ProductType Successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete ProductType from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "producttype"
+                ],
+                "summary": "Delete ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete ProductType Successfully",
                         "schema": {
                             "type": "string"
                         }

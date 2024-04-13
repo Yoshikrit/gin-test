@@ -19,7 +19,11 @@ paths:
       description: Get ProductTypes from database
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: Get ProductTypes Successfully
+          schema:
+            type: string
       summary: Get ProductTypes
       tags:
       - producttype
@@ -27,19 +31,17 @@ paths:
       consumes:
       - application/json
       description: Create ProductType to database
-      parameters:
-      - description: ProductType ID
-        in: path
-        name: id
-        required: true
-        type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: Create ProductType Successfully
+          schema:
+            type: string
       summary: Create ProductType
       tags:
       - producttype
-  /producttype/:id:
+  /producttype/{id}:
     delete:
       consumes:
       - application/json
@@ -72,7 +74,11 @@ paths:
         type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: Get ProductType Successfully
+          schema:
+            type: string
       summary: Get ProductType
       tags:
       - producttype
@@ -88,7 +94,11 @@ paths:
         type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: Update ProductType Successfully
+          schema:
+            type: string
       summary: Update ProductType
       tags:
       - producttype
