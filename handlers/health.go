@@ -19,6 +19,7 @@ func NewHealthHandler() healthHandler {
 // @Tags health
 // @Accept  json
 // @Produce  json
+// @response 200 {string} string "ProductType Service : OK"
 // @Router /producttype/health [get]
 func (h *healthHandler) CheckHealth(ctx *gin.Context){
 	logs.Info("Handler: Create ProductType Successfully")

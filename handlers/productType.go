@@ -23,6 +23,7 @@ func NewProductTypeHandler(productTypeSrv services.ProductTypeService) productTy
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @Success 200 {object} models.Producttype
 // @Router /producttype/ [post]
 func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	var prodTypeReq models.ProductTypeCreate
@@ -51,6 +52,7 @@ func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @Success 200 {array} models.Producttype
 // @Router /producttype/ [get]
 func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 	prodTypesRes, err := h.productTypeSrv.GetProductTypes()
@@ -71,6 +73,7 @@ func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @Success 200 {object} models.Producttype
 // @Router /producttype/:id [get]
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -99,6 +102,7 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @Success 200 {object} models.Producttype
 // @Router /producttype/:id [put]
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -134,6 +138,7 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @response 200 {string} string "Delete ProductType Successfully"
 // @Router /producttype/:id [delete]
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -161,6 +166,7 @@ func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 // @Tags producttype
 // @Accept  json
 // @Produce  json
+// @response 200 {integer} int
 // @Router /producttype/ [get]
 func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
     count, err := h.productTypeSrv.GetProductTypeCount()
