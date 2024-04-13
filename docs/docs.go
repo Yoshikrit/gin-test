@@ -25,7 +25,7 @@ const docTemplate = `{
     "paths": {
         "/producttype/": {
             "get": {
-                "description": "Get ProductType's count from database",
+                "description": "Get ProductTypes from database",
                 "consumes": [
                     "application/json"
                 ],
@@ -35,7 +35,7 @@ const docTemplate = `{
                 "tags": [
                     "producttype"
                 ],
-                "summary": "Get ProductType's Count",
+                "summary": "Get ProductTypes",
                 "responses": {}
             },
             "post": {
@@ -50,6 +50,15 @@ const docTemplate = `{
                     "producttype"
                 ],
                 "summary": "Create ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {}
             }
         },
@@ -66,6 +75,15 @@ const docTemplate = `{
                     "producttype"
                 ],
                 "summary": "Get ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {}
             },
             "put": {
@@ -80,6 +98,15 @@ const docTemplate = `{
                     "producttype"
                 ],
                 "summary": "Update ProductType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {}
             },
             "delete": {
@@ -94,7 +121,46 @@ const docTemplate = `{
                     "producttype"
                 ],
                 "summary": "Delete ProductType",
-                "responses": {}
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ProductType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete ProductType Successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/producttype/count": {
+            "get": {
+                "description": "Get ProductType's count from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "producttype"
+                ],
+                "summary": "Get ProductType's Count",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
             }
         },
         "/producttype/health": {
@@ -110,7 +176,14 @@ const docTemplate = `{
                     "health"
                 ],
                 "summary": "Check health of the service",
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "ProductType Service : OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },

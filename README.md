@@ -15,6 +15,7 @@ cd <project-directory>
 ```
 
 if you run in dev, you need to create docker-compose.yml for its own for postgresql database
+
 then run on main
 
 ```bash
@@ -45,4 +46,5 @@ docker-compose -f gintest-compose.yml up -d
 And to use it, you need to connect to pgadmin and connect to server before using service in container
 
 you can open swagger-ui from this link
-[Link text](http://localhost:8081/swagger/index.html#)
+
+[Click](http://localhost:8081/swagger/index.html#)

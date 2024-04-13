@@ -16,17 +16,23 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get ProductType's count from database
+      description: Get ProductTypes from database
       produces:
       - application/json
       responses: {}
-      summary: Get ProductType's Count
+      summary: Get ProductTypes
       tags:
       - producttype
     post:
       consumes:
       - application/json
       description: Create ProductType to database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses: {}
@@ -38,9 +44,19 @@ paths:
       consumes:
       - application/json
       description: Delete ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: Delete ProductType Successfully
+          schema:
+            type: string
       summary: Delete ProductType
       tags:
       - producttype
@@ -48,6 +64,12 @@ paths:
       consumes:
       - application/json
       description: Get ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses: {}
@@ -58,10 +80,31 @@ paths:
       consumes:
       - application/json
       description: Update ProductType from database
+      parameters:
+      - description: ProductType ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses: {}
       summary: Update ProductType
+      tags:
+      - producttype
+  /producttype/count:
+    get:
+      consumes:
+      - application/json
+      description: Get ProductType's count from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: Get ProductType's Count
       tags:
       - producttype
   /producttype/health:
@@ -71,7 +114,11 @@ paths:
       description: Check if the service is up and running
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: 'ProductType Service : OK'
+          schema:
+            type: string
       summary: Check health of the service
       tags:
       - health
