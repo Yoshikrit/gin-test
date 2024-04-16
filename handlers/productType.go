@@ -13,17 +13,21 @@ import (
 type productTypeHandler struct {
 	productTypeSrv services.ProductTypeService
 }
-
 func NewProductTypeHandler(productTypeSrv services.ProductTypeService) productTypeHandler {
 	return productTypeHandler{productTypeSrv: productTypeSrv}
 }
 
+// CreateProductTypeHandler godoc
 // @Summary Create ProductType
-// @Description Create ProductType to database
+// @Description Create producttype
 // @Tags producttype
 // @Accept  json
 // @Produce  json
-// @response 200 {string} string "Create ProductType Successfully"
+// @param ProductType body models.ProductTypeCreate true "ProductType data to be create"
+// @response 200 {object} models.ProductType{} "Create ProductType Successfully"
+// @response 400 {object} errs.AppError "Error Bad Request"
+// @response 409 {object} errs.AppError "Error Conflict Error"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/ [post]
 func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 	var prodTypeReq models.ProductTypeCreate
@@ -42,19 +46,21 @@ func (h *productTypeHandler) CreateProductType(ctx *gin.Context){
 
 	logs.Info("Handler: Create ProductType Successfully")
 	ctx.JSON(http.StatusCreated, gin.H{
-		"code":    http.StatusCreated,
 		"message": prodTypeRes,
 	})
 }
 
-// @Summary Get ProductTypes
-// @Description Get ProductTypes from database
+// GetAllProductTypesHandler godoc
+// @Summary Get All ProductType
+// @Description Get all producttype
 // @Tags producttype
 // @Accept  json
 // @Produce  json
-// @response 200 {string} string "Get ProductTypes Successfully"
+// @response 200 {array} models.ProductType{} "Get ProductTypes Successfully"
+// @response 404 {object} errs.AppError "Error Not Found"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/ [get]
-func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
+func (h *productTypeHandler) GetProductTypes(ctx *gin.Context){
 	prodTypesRes, err := h.productTypeSrv.GetProductTypes()
 	if err != nil {
 		logs.Error(err.Error())
@@ -64,17 +70,21 @@ func (h *productTypeHandler) GetAllProductTypes(ctx *gin.Context){
 
 	logs.Info("Handler: Get ProductTypes Successfully")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": prodTypesRes,
 	})
 }
+
+// GetProductTypeByIDHandler godoc
 // @Summary Get ProductType
-// @Description Get ProductType from database
+// @Description Get producttype by id
 // @Tags producttype
 // @Accept  json
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
-// @response 200 {string} string "Get ProductType Successfully"
+// @response 200 {object} models.ProductType{} "Get ProductType Successfully"
+// @response 400 {object} errs.AppError "Error Bad Request"
+// @response 404 {object} errs.AppError "Error Not Found"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [get]
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -93,18 +103,22 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 
 	logs.Info("Handler: Get ProductType Successfully")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": prodTypeRes,
 	})
 }
 
+// UpdateProductTypeByIDHandler godoc
 // @Summary Update ProductType
-// @Description Update ProductType from database
+// @Description Update producttype by id
 // @Tags producttype
 // @Accept  json
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
-// @response 200 {string} string "Update ProductType Successfully"
+// @param ProductType body models.ProductTypeUpdate true "ProductType data to be update"
+// @response 200 {object} models.ProductType{} "Update ProductType Successfully"
+// @response 400 {object} errs.AppError "Error Bad Request"
+// @response 404 {object} errs.AppError "Error Not Found"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [put]
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -130,18 +144,21 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 
 	logs.Info("Handler: Update ProductType Successfully")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": prodTypeRes,
 	})
 }
 
+// DeleteProductTypeByIDHandler godoc
 // @Summary Delete ProductType
-// @Description Delete ProductType from database
+// @Description Delete producttype by id
 // @Tags producttype
 // @Accept  json
 // @Produce  json
 // @Param        id   path      int  true  "ProductType ID"
-// @response 200 {string} string "Delete ProductType Successfully"
+// @response 200 {object} models.Response "Delete ProductType Successfully"
+// @response 400 {object} errs.AppError "Error Bad Request"
+// @response 404 {object} errs.AppError "Error Not Found"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [delete]
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 	id, err := GetIntId(ctx)
@@ -159,17 +176,18 @@ func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
 
 	logs.Info("Handler: Delete ProductType Successfully")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": "Delete ProductType Successfully",
 	})
 }
 
-// @Summary Get ProductType's Count
-// @Description Get ProductType's count from database
+// GetProductTypeCountHandler godoc
+// @Summary Get ProductType Count
+// @Description Get producttype's count from database
 // @Tags producttype
 // @Accept  json
 // @Produce  json
-// @response 200 {integer} int
+// @response 200 {object} models.Response "Get ProductType's Count Successfully"
+// @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/count [get]
 func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
     count, err := h.productTypeSrv.GetProductTypeCount()
@@ -181,7 +199,6 @@ func (h *productTypeHandler) GetProductTypeCount(ctx *gin.Context) {
 
 	logs.Info("Handler: Get ProductType's Count Successfully")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": count,
 	})
 }

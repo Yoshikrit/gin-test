@@ -1,43 +1,112 @@
 basePath: /
+definitions:
+  errs.AppError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  models.ProductType:
+    properties:
+      ProdType_Id:
+        type: integer
+      ProdType_Name:
+        type: string
+    type: object
+  models.ProductTypeCreate:
+    properties:
+      ProdType_Id:
+        minimum: 0
+        type: integer
+      ProdType_Name:
+        maxLength: 40
+        type: string
+    required:
+    - ProdType_Id
+    - ProdType_Name
+    type: object
+  models.ProductTypeUpdate:
+    properties:
+      ProdType_Name:
+        maxLength: 40
+        type: string
+    required:
+    - ProdType_Name
+    type: object
+  models.Response:
+    properties:
+      message:
+        type: string
+    type: object
 host: localhost:8081
 info:
   contact:
     email: example@gmail.com
     name: Walter White
     url: https://twitter.com/example
-  description: Gin-Test API for testing.
+  description: Gin-Test - Teletubbie's ProductType API.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: Gin-Test API
+  title: Gin-Test - ProductType API
   version: "1.0"
 paths:
   /producttype/:
     get:
       consumes:
       - application/json
-      description: Get ProductTypes from database
+      description: Get all producttype
       produces:
       - application/json
       responses:
         "200":
           description: Get ProductTypes Successfully
           schema:
-            type: string
-      summary: Get ProductTypes
+            items:
+              $ref: '#/definitions/models.ProductType'
+            type: array
+        "404":
+          description: Error Not Found
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
+      summary: Get All ProductType
       tags:
       - producttype
     post:
       consumes:
       - application/json
-      description: Create ProductType to database
+      description: Create producttype
+      parameters:
+      - description: ProductType data to be create
+        in: body
+        name: ProductType
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductTypeCreate'
       produces:
       - application/json
       responses:
         "200":
           description: Create ProductType Successfully
           schema:
-            type: string
+            $ref: '#/definitions/models.ProductType'
+        "400":
+          description: Error Bad Request
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "409":
+          description: Error Conflict Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
       summary: Create ProductType
       tags:
       - producttype
@@ -45,7 +114,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete ProductType from database
+      description: Delete producttype by id
       parameters:
       - description: ProductType ID
         in: path
@@ -58,14 +127,26 @@ paths:
         "200":
           description: Delete ProductType Successfully
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Error Bad Request
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "404":
+          description: Error Not Found
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
       summary: Delete ProductType
       tags:
       - producttype
     get:
       consumes:
       - application/json
-      description: Get ProductType from database
+      description: Get producttype by id
       parameters:
       - description: ProductType ID
         in: path
@@ -78,27 +159,57 @@ paths:
         "200":
           description: Get ProductType Successfully
           schema:
-            type: string
+            $ref: '#/definitions/models.ProductType'
+        "400":
+          description: Error Bad Request
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "404":
+          description: Error Not Found
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
       summary: Get ProductType
       tags:
       - producttype
     put:
       consumes:
       - application/json
-      description: Update ProductType from database
+      description: Update producttype by id
       parameters:
       - description: ProductType ID
         in: path
         name: id
         required: true
         type: integer
+      - description: ProductType data to be update
+        in: body
+        name: ProductType
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductTypeUpdate'
       produces:
       - application/json
       responses:
         "200":
           description: Update ProductType Successfully
           schema:
-            type: string
+            $ref: '#/definitions/models.ProductType'
+        "400":
+          description: Error Bad Request
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "404":
+          description: Error Not Found
+          schema:
+            $ref: '#/definitions/errs.AppError'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
       summary: Update ProductType
       tags:
       - producttype
@@ -106,36 +217,42 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get ProductType's count from database
+      description: Get producttype's count from database
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Get ProductType's Count Successfully
           schema:
-            type: integer
-      summary: Get ProductType's Count
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Error Unexpected Error
+          schema:
+            $ref: '#/definitions/errs.AppError'
+      summary: Get ProductType Count
       tags:
       - producttype
   /producttype/health:
     get:
       consumes:
       - application/json
-      description: Check if the service is up and running
+      description: Health check
+      operationId: HealthCheckHandler
       produces:
       - application/json
       responses:
         "200":
-          description: 'ProductType Service : OK'
+          description: ProductType service is running
           schema:
-            type: string
-      summary: Check health of the service
+            $ref: '#/definitions/models.Response'
+      summary: Health Check
       tags:
-      - health
+      - producttype
 schemes:
 - http
+- https
 securityDefinitions:
-  ApiKeyAuth:
+  bearerAuth:
     in: header
     name: Authorization
     type: apiKey

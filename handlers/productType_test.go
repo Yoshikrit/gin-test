@@ -34,7 +34,6 @@ func TestCreateProductType(t *testing.T) {
 	}
 
 	prodTypeResMock := &gin.H{
-		"code":    http.StatusCreated,
 		"message": &prodTypeServResMock,
 	}
 
@@ -101,7 +100,6 @@ func TestGetAllProductTypes(t *testing.T) {
 
 	prodTypesResJSON, _ := json.Marshal(
 		&gin.H{
-			"code":    http.StatusOK,
 			"message": &prodTypesResMock,
 		},
 	)
@@ -135,7 +133,7 @@ func TestGetAllProductTypes(t *testing.T) {
 			c.Request = req
 
 			prodTypeHandler := handlers.NewProductTypeHandler(prodTypeService)
-			prodTypeHandler.GetAllProductTypes(c)
+			prodTypeHandler.GetProductTypes(c)
 
 			assert.Equal(t, tc.expectedStatus, rec.Code)
 			if !tc.isFail {
@@ -156,7 +154,6 @@ func TestGetProductTypeByID(t *testing.T) {
 
 	prodTypeResJSON, _ := json.Marshal(
 		&gin.H{
-			"code":    http.StatusOK,
 			"message": &prodTypeResMock,
 		},
 	)
@@ -226,7 +223,6 @@ func TestUpdateProductTypeByID(t *testing.T) {
 	}
 
 	prodTypeResMock := &gin.H{
-		"code":    http.StatusOK,
 		"message": &prodTypeServResMock,
 	}
 
@@ -289,7 +285,6 @@ func TestDeleteProductTypeByID(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	prodTypeDeleteResMock := &gin.H{
-		"code":    http.StatusOK,
 		"message": "Delete ProductType Successfully",
 	}
 	
@@ -348,7 +343,6 @@ func TestGetProductTypeCount(t *testing.T) {
 	num := int64(42)
 
 	prodTypeServResMock := &gin.H{
-		"code":    http.StatusOK,
 		"message": &num,
 	}
 	

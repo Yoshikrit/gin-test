@@ -25,7 +25,7 @@ const docTemplate = `{
     "paths": {
         "/producttype/": {
             "get": {
-                "description": "Get ProductTypes from database",
+                "description": "Get all producttype",
                 "consumes": [
                     "application/json"
                 ],
@@ -35,18 +35,33 @@ const docTemplate = `{
                 "tags": [
                     "producttype"
                 ],
-                "summary": "Get ProductTypes",
+                "summary": "Get All ProductType",
                 "responses": {
                     "200": {
                         "description": "Get ProductTypes Successfully",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ProductType"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Error Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
             },
             "post": {
-                "description": "Create ProductType to database",
+                "description": "Create producttype",
                 "consumes": [
                     "application/json"
                 ],
@@ -57,11 +72,40 @@ const docTemplate = `{
                     "producttype"
                 ],
                 "summary": "Create ProductType",
+                "parameters": [
+                    {
+                        "description": "ProductType data to be create",
+                        "name": "ProductType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProductTypeCreate"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Create ProductType Successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.ProductType"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "409": {
+                        "description": "Error Conflict Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
@@ -69,7 +113,7 @@ const docTemplate = `{
         },
         "/producttype/count": {
             "get": {
-                "description": "Get ProductType's count from database",
+                "description": "Get producttype's count from database",
                 "consumes": [
                     "application/json"
                 ],
@@ -79,12 +123,18 @@ const docTemplate = `{
                 "tags": [
                     "producttype"
                 ],
-                "summary": "Get ProductType's Count",
+                "summary": "Get ProductType Count",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Get ProductType's Count Successfully",
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
@@ -92,7 +142,7 @@ const docTemplate = `{
         },
         "/producttype/health": {
             "get": {
-                "description": "Check if the service is up and running",
+                "description": "Health check",
                 "consumes": [
                     "application/json"
                 ],
@@ -100,14 +150,15 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "health"
+                    "producttype"
                 ],
-                "summary": "Check health of the service",
+                "summary": "Health Check",
+                "operationId": "HealthCheckHandler",
                 "responses": {
                     "200": {
-                        "description": "ProductType Service : OK",
+                        "description": "ProductType service is running",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -115,7 +166,7 @@ const docTemplate = `{
         },
         "/producttype/{id}": {
             "get": {
-                "description": "Get ProductType from database",
+                "description": "Get producttype by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -139,13 +190,31 @@ const docTemplate = `{
                     "200": {
                         "description": "Get ProductType Successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.ProductType"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "404": {
+                        "description": "Error Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
             },
             "put": {
-                "description": "Update ProductType from database",
+                "description": "Update producttype by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -163,19 +232,46 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "ProductType data to be update",
+                        "name": "ProductType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProductTypeUpdate"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Update ProductType Successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.ProductType"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "404": {
+                        "description": "Error Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Delete ProductType from database",
+                "description": "Delete producttype by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -199,15 +295,94 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete ProductType Successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "404": {
+                        "description": "Error Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Unexpected Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.AppError"
                         }
                     }
                 }
             }
         }
     },
+    "definitions": {
+        "errs.AppError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ProductType": {
+            "type": "object",
+            "properties": {
+                "ProdType_Id": {
+                    "type": "integer"
+                },
+                "ProdType_Name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ProductTypeCreate": {
+            "type": "object",
+            "required": [
+                "ProdType_Id",
+                "ProdType_Name"
+            ],
+            "properties": {
+                "ProdType_Id": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "ProdType_Name": {
+                    "type": "string",
+                    "maxLength": 40
+                }
+            }
+        },
+        "models.ProductTypeUpdate": {
+            "type": "object",
+            "required": [
+                "ProdType_Name"
+            ],
+            "properties": {
+                "ProdType_Name": {
+                    "type": "string",
+                    "maxLength": 40
+                }
+            }
+        },
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "bearerAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
@@ -220,9 +395,9 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8081",
 	BasePath:         "/",
-	Schemes:          []string{"http"},
-	Title:            "Gin-Test API",
-	Description:      "Gin-Test API for testing.",
+	Schemes:          []string{"http", "https"},
+	Title:            "Gin-Test - ProductType API",
+	Description:      "Gin-Test - Teletubbie's ProductType API.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

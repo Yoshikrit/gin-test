@@ -14,17 +14,18 @@ func NewHealthHandler() healthHandler {
 	return healthHandler{}
 }
 
-// @Summary Check health of the service
-// @Description Check if the service is up and running
-// @Tags health
+// HealthCheckHandler godoc
+// @Summary Health Check
+// @Description Health check
+// @id HealthCheckHandler
+// @Tags producttype
 // @Accept  json
 // @Produce  json
-// @response 200 {string} string "ProductType Service is running"
+// @response 200 {object} models.Response "ProductType service is running"
 // @Router /producttype/health [get]
-func (h *healthHandler) CheckHealth(ctx *gin.Context){
-	logs.Info("Handler: Create ProductType Successfully")
+func (h *healthHandler) HealthCheck(ctx *gin.Context){
+	logs.Info("Handler: ProductType service is  running")
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    http.StatusOK,
 		"message": "ProductType Service : OK",
 	})
 }
