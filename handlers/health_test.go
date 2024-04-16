@@ -10,7 +10,7 @@ import (
 	"gin-test/handlers"
 )
 
-func TestCheckHealth(t *testing.T) {
+func TestHealthCheck(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	t.Run("test case : pass", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/producttype/health", nil)
@@ -20,9 +20,9 @@ func TestCheckHealth(t *testing.T) {
 		c.Request = req
 
 		healthHandler := handlers.NewHealthHandler()
-		healthHandler.CheckHealth(c)
+		healthHandler.HealthCheck(c)
 
-		expectedBody := `{"code":200,"message":"ProductType Service : OK"}`
+		expectedBody := `{"message":"ProductType Service : OK"}`
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, expectedBody, rec.Body.String())
 	})

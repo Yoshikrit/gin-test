@@ -14,7 +14,7 @@ func SetupProductTypeRoutes(g *gin.RouterGroup, db *gorm.DB) {
 	productTypeService := services.NewProductTypeService(productTypeRepository)
 	productTypeHandler := handlers.NewProductTypeHandler(productTypeService)
 
-	g.GET("/", productTypeHandler.GetAllProductTypes)
+	g.GET("/", productTypeHandler.GetProductTypes)
 	g.GET("/:id", productTypeHandler.GetProductTypeByID)
 	g.POST("/", productTypeHandler.CreateProductType)
 	g.PUT("/:id", productTypeHandler.UpdateProductTypeByID)
@@ -25,5 +25,5 @@ func SetupProductTypeRoutes(g *gin.RouterGroup, db *gorm.DB) {
 func SetupHealth(g *gin.RouterGroup) {
 	healthHandler := handlers.NewHealthHandler()
 	
-	g.GET("/health", healthHandler.CheckHealth)
+	g.GET("/health", healthHandler.HealthCheck)
 }

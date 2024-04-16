@@ -13,10 +13,11 @@ import (
 	"gin-test/configs"
 	"gin-test/models"
 	"gin-test/routes"
+	"gin-test/middlewares"
 )
 
-// @title Gin-Test API
-// @description Gin-Test API for testing.
+// @title Gin-Test - ProductType API
+// @description Gin-Test - Teletubbie's ProductType API.
 // @version 1.0
 
 // @contact.name   Walter White
@@ -29,8 +30,8 @@ import (
 // @host localhost:8081
 // @BasePath /
 
-// @schemes http
-// @securityDefinitions.apikey ApiKeyAuth
+// @schemes http https
+// @securityDefinitions.apikey bearerAuth
 // @in header
 // @name Authorization
 func main() {
@@ -53,7 +54,7 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.Use(gin.Recovery())
-	r.Use(gin.Logger())
+	r.Use(middlewares.Logger())
 	
 	r.Use(cors.Default())
 
