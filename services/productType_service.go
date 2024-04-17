@@ -48,10 +48,7 @@ func (s *productTypeService) GetProductTypes() ([]models.ProductType, error) {
 
 	var prodTypesRes []models.ProductType
 	for _, prodTypeFromDB := range prodTypesFromDB {
-		prodTypeRes := models.ProductType{
-			Id:       prodTypeFromDB.Id,
-			Name:     prodTypeFromDB.Name,
-		}
+		prodTypeRes := models.ProductType(prodTypeFromDB)
 		prodTypesRes = append(prodTypesRes, prodTypeRes)
 	}
 
