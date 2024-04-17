@@ -128,7 +128,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Get ProductType's Count Successfully",
                         "schema": {
-                            "$ref": "#/definitions/models.Response"
+                            "type": "integer"
                         }
                     },
                     "500": {
