@@ -16,6 +16,12 @@ import (
 	"gin-test/tests/mocks/mock_repositories"
 )
 
+const (
+	EndpointPath = "/producttype/"
+	ContentType  = "Content-Type"
+	Application  = "application/json"
+)
+
 func TestCreateProductType(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -51,14 +57,14 @@ func TestCreateProductType(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",        body: string(prodTypeReqJSON),      expectedStatus: 201, expectedBody: string(prodTypeResJSON)},
-		{name: "test case : failed bind", body: string(prodTypeReqErrorJSON), expectedStatus: 400, expectedBody: `{"code":400,"message":"Key: 'ProductTypeCreate.Id' Error:Field validation for 'Id' failed on the 'required' tag\nKey: 'ProductTypeCreate.Name' Error:Field validation for 'Name' failed on the 'required' tag"}`,},
+		{name: "test case : create pass",        body: string(prodTypeReqJSON),      expectedStatus: 201, expectedBody: string(prodTypeResJSON)},
+		{name: "test case : create failed bind", body: string(prodTypeReqErrorJSON), expectedStatus: 400, expectedBody: `{"code":400,"message":"Key: 'ProductTypeCreate.Id' Error:Field validation for 'Id' failed on the 'required' tag\nKey: 'ProductTypeCreate.Name' Error:Field validation for 'Name' failed on the 'required' tag"}`,},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, strings.NewReader(tc.body))
+			req.Header.Set(ContentType, Application)
 			rec := httptest.NewRecorder()
 
 			c, _ := gin.CreateTestContext(rec)
@@ -111,13 +117,12 @@ func TestGetAllProductTypes(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass", expectedStatus: 200,	expectedBody: string(prodTypesResJSON),},
+		{name: "test case : get all pass", expectedStatus: 200,	expectedBody: string(prodTypesResJSON),},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, strings.NewReader(tc.body))
 
 			rec := httptest.NewRecorder()
 
@@ -160,14 +165,13 @@ func TestGetProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			param: "1", expectedStatus: 200,	expectedBody: string(prodTypeResJSON),},
-		{name: "test case : failed param int",  param: "a", expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,},
+		{name: "test case : get pass",    			param: "1", expectedStatus: 200,	expectedBody: string(prodTypeResJSON),},
+		{name: "test case : get failed param int",  param: "a", expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", nil)
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, nil)
 
 			rec := httptest.NewRecorder()
 
@@ -225,15 +229,15 @@ func TestUpdateProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			param: "1", body: string(prodTypeReqJSON), 	  	expectedStatus: 200,	expectedBody: string(prodTypeResJSON),},
-		{name: "test case : failed param int",  param: "a", body: string(prodTypeReqJSON),		expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,},
-		{name: "test case : failed bind",  		param: "1", body: string(prodTypeErrorReqJSON), expectedStatus: 400,	expectedBody: `{"code":400,"message":"Key: 'ProductTypeUpdate.Name' Error:Field validation for 'Name' failed on the 'required' tag"}`,},
+		{name: "test case : update pass",    			param: "1", body: string(prodTypeReqJSON), 	  	expectedStatus: 200,	expectedBody: string(prodTypeResJSON),},
+		{name: "test case : update failed param int",  param: "a", body: string(prodTypeReqJSON),		expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,},
+		{name: "test case : update failed bind",  		param: "1", body: string(prodTypeErrorReqJSON), expectedStatus: 400,	expectedBody: `{"code":400,"message":"Key: 'ProductTypeUpdate.Name' Error:Field validation for 'Name' failed on the 'required' tag"}`,},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPut, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPut, EndpointPath, strings.NewReader(tc.body))
+			req.Header.Set(ContentType, Application)
 
 			rec := httptest.NewRecorder()
 
@@ -275,14 +279,13 @@ func TestDeleteProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			param: "1", expectedStatus: 200,	expectedBody: string(prodTypeResJSON),									dbReturn: nil},
-		{name: "test case : failed param int",  param: "a", expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,  dbReturn: errors.New("")},
+		{name: "test case : delete pass",    		   param: "1", expectedStatus: 200,	expectedBody: string(prodTypeResJSON),									dbReturn: nil},
+		{name: "test case : delete failed param int",  param: "a", expectedStatus: 400,	expectedBody: `{"code":400,"message":"Invalid id: a is not integer"}`,  dbReturn: errors.New("")},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodDelete, "/prodTypeuct/", nil)
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodDelete, EndpointPath, nil)
 
 			rec := httptest.NewRecorder()
 
@@ -315,8 +318,8 @@ func TestGetProductTypeCount(t *testing.T) {
 
 	prodTypeResJSON, _ := json.Marshal(prodTypeServResMock)
 
-    t.Run("test case : pass", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/count", nil)
+    t.Run("test case : get count pass", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, EndpointPath + "/count", nil)
 
 		rec := httptest.NewRecorder()
 
