@@ -67,7 +67,7 @@ func TestGetIntId(t *testing.T) {
 			Value: "123",
 		}}
 
-		id, err := handlers.GetIntId(c)
+		id, err := handlers.GetIntID(c)
 
 		assert.NoError(t, err)
 		assert.Equal(t, 123, id)
@@ -81,7 +81,7 @@ func TestGetIntId(t *testing.T) {
 			Value: "a",
 		}}
 
-		id, err := handlers.GetIntId(c)
+		id, err := handlers.GetIntID(c)
 
 		expectedErr := errs.NewBadRequestError("Invalid id: a is not integer")
 
