@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/cors"
-	"github.com/penglongli/gin-metrics/ginmetrics"
 	"os"
 
     ginSwagger "github.com/swaggo/gin-swagger"
@@ -36,27 +34,16 @@ import (
 // @name Authorization
 func main() {
 	configs.LoadEnv()
+	gin.SetMode(gin.ReleaseMode)
 
-	if (os.Getenv("APP_ENV") == "production") {
-		gin.SetMode(gin.ReleaseMode)
-	} else {
-		gin.SetMode(gin.DebugMode)
-	}
 	r := gin.New()
+	r.SetTrustedProxies(nil)
 
-	// middleware
-	m := ginmetrics.GetMonitor()
-	m.SetMetricPath("/metrics")
-	m.SetSlowTime(10)
-	m.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
+	// Middleware
+	m := middlewares.Metrics()
 	m.Use(r)
-
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	r.Use(gin.Recovery())
-	r.Use(middlewares.Logger())
-	
-	r.Use(cors.Default())
+	r.Use(gin.Recovery(), middlewares.Logger(), middlewares.Cors())
 
 	configs.DatabaseInit()
 	defer configs.GetDB().DB()
@@ -68,8 +55,7 @@ func main() {
 		panic(err)
 	}
 
-	//routes
-
+	// Routes
 	productTypeGroup := r.Group("/producttype")
 	routes.SetupProductTypeRoutes(productTypeGroup, db)
 	routes.SetupHealth(productTypeGroup)

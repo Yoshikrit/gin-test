@@ -83,7 +83,7 @@ func (h *productTypeHandler) GetProductTypes(ctx *gin.Context){
 // @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [get]
 func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
-	id, err := GetIntId(ctx)
+	id, err := GetIntID(ctx)
 	if err != nil {
 		logs.Error(err.Error())
 		HandleError(ctx, err)
@@ -115,7 +115,7 @@ func (h *productTypeHandler) GetProductTypeByID(ctx *gin.Context){
 // @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [put]
 func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
-	id, err := GetIntId(ctx)
+	id, err := GetIntID(ctx)
 	if err != nil {
 		logs.Error(err.Error())
 		HandleError(ctx, err)
@@ -153,7 +153,7 @@ func (h *productTypeHandler) UpdateProductTypeByID(ctx *gin.Context){
 // @response 500 {object} errs.AppError "Error Unexpected Error"
 // @Router /producttype/{id} [delete]
 func (h *productTypeHandler) DeleteProductTypeByID(ctx *gin.Context){
-	id, err := GetIntId(ctx)
+	id, err := GetIntID(ctx)
 	if err != nil {
 		logs.Error(err.Error())
 		HandleError(ctx, err)

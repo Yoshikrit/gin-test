@@ -24,7 +24,7 @@ func HandleError(ctx *gin.Context, err error) {
 	})
 }
 
-func GetIntId(ctx *gin.Context) (int, error) {
+func GetIntID(ctx *gin.Context) (int, error) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
