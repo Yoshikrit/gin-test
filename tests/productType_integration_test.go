@@ -34,11 +34,9 @@ func TestCreateProductType(t *testing.T) {
 		Name: "A",
 	}
 
-	prodTypeResMock := &gin.H{
-		"message": &models.ProductType{
-			Id:   1,
-			Name: "A",
-		},
+	prodTypeResMock := &models.ProductType{
+		Id:   1,
+		Name: "A",
 	}
 
 	prodTypeReqJSON, _ := json.Marshal(prodTypeReqMock)
@@ -103,11 +101,7 @@ func TestGetAllProductTypes(t *testing.T) {
 		},
 	}
 
-	prodTypesResJSON, _ := json.Marshal(
-		&gin.H{
-			"message": &prodTypesResMock,
-		},
-	)
+	prodTypesResJSON, _ := json.Marshal(&prodTypesResMock)
 
 	type testCase struct {
 		name         	string
@@ -156,11 +150,7 @@ func TestGetProductTypeByID(t *testing.T) {
 		Name: "A",
 	}
 
-	prodTypeResJSON, _ := json.Marshal(
-		&gin.H{
-			"message": &prodTypeResMock,
-		},
-	)
+	prodTypeResJSON, _ := json.Marshal(&prodTypeResMock)
 
 	type testCase struct {
 		name         	string
@@ -222,13 +212,9 @@ func TestUpdateProductTypeByID(t *testing.T) {
 		Name: "B",
 	}
 
-	prodTypeResMock := &gin.H{
-		"message": &prodTypeServResMock,
-	}
-
 	prodTypeReqJSON, _ := json.Marshal(prodTypeReqMock)
 	prodTypeErrorReqJSON, _ := json.Marshal(prodTypeErrorReqMock)
-	prodTypeResJSON, _ := json.Marshal(prodTypeResMock)
+	prodTypeResJSON, _ := json.Marshal(prodTypeServResMock)
 
 	type testCase struct {
 		name         	string
@@ -325,9 +311,7 @@ func TestGetProductTypeCount(t *testing.T) {
 
 	num := int64(42)
 
-	prodTypeServResMock := &gin.H{
-		"message": &num,
-	}
+	prodTypeServResMock := &num
 
 	prodTypeResJSON, _ := json.Marshal(prodTypeServResMock)
 
