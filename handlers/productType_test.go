@@ -15,6 +15,12 @@ import (
 	"gin-test/utils/errs"
 )
 
+const (
+	EndpointPath = "/producttype/"
+	ContentType  = "Content-Type"
+	Application  = "application/json"
+)
+
 func TestCreateProductType(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -49,15 +55,15 @@ func TestCreateProductType(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",            isValidate: false, body: string(prodTypeReqJSON), 	 insertSrv: *prodTypeReqMock, 	   expectedStatus: 201, expectedBody: string(prodTypeResJSON),      srvReturn1: *prodTypeServResMock,  srvReturn2: nil},
-		{name: "test case : failed bind",     isValidate: true,  body: string(prodTypeReqErrorJSON), insertSrv: *prodTypeReqErrorMock, expectedStatus: 400, expectedBody: `{"code":400,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: nil},
-		{name: "test case : failed service",  isValidate: false, body: string(prodTypeReqJSON), 	 insertSrv: *prodTypeReqMock, 	   expectedStatus: 500, expectedBody: `{"code":500,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
+		{name: "test case : create pass",            isValidate: false, body: string(prodTypeReqJSON), 	 insertSrv: *prodTypeReqMock, 	   expectedStatus: 201, expectedBody: string(prodTypeResJSON),      srvReturn1: *prodTypeServResMock,  srvReturn2: nil},
+		{name: "test case : create failed bind",     isValidate: true,  body: string(prodTypeReqErrorJSON), insertSrv: *prodTypeReqErrorMock, expectedStatus: 400, expectedBody: `{"code":400,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: nil},
+		{name: "test case : create failed service",  isValidate: false, body: string(prodTypeReqJSON), 	 insertSrv: *prodTypeReqMock, 	   expectedStatus: 500, expectedBody: `{"code":500,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, strings.NewReader(tc.body))
+			req.Header.Set(ContentType, Application)
 			rec := httptest.NewRecorder()
 
 			c, _ := gin.CreateTestContext(rec)
@@ -107,8 +113,8 @@ func TestGetAllProductTypes(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			isFail: false, 	expectedStatus: 200,	expectedBody: string(prodTypesResJSON), 	srvReturn1: prodTypesResMock,  	 	 srvReturn2: nil},
-		{name: "test case : failed service", 	isFail: true, 	expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn1: []models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
+		{name: "test case : get all pass",    			isFail: false, 	expectedStatus: 200,	expectedBody: string(prodTypesResJSON), 	srvReturn1: prodTypesResMock,  	 	 srvReturn2: nil},
+		{name: "test case : get all failed service", 	isFail: true, 	expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn1: []models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
 	}
 
 	for _, tc := range cases {
@@ -116,8 +122,7 @@ func TestGetAllProductTypes(t *testing.T) {
 			prodTypeService := mock_services.NewProductTypeServiceMock()
 			prodTypeService.On("GetProductTypes").Return(tc.srvReturn1, tc.srvReturn2)
 
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, strings.NewReader(tc.body))
 
 			rec := httptest.NewRecorder()
 
@@ -158,9 +163,9 @@ func TestGetProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			isValidate: false,  param: "1", insertSrv: 1,  expectedStatus: 200,	expectedBody: string(prodTypeResJSON), 		srvReturn1: prodTypeResMock,  	   srvReturn2: nil},
-		{name: "test case : failed param int",  isValidate: true, 	param: "a", insertSrv: 0,  expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: errs.NewBadRequestError("")},
-		{name: "test case : failed service", 	isValidate: false,  param: "1", insertSrv: 1,  expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn1: models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
+		{name: "test case : get pass",    			isValidate: false,  param: "1", insertSrv: 1,  expectedStatus: 200,	expectedBody: string(prodTypeResJSON), 		srvReturn1: prodTypeResMock,  	   srvReturn2: nil},
+		{name: "test case : get failed param int",  isValidate: true, 	param: "a", insertSrv: 0,  expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  srvReturn1: models.ProductType{},  srvReturn2: errs.NewBadRequestError("")},
+		{name: "test case : get failed service", 	isValidate: false,  param: "1", insertSrv: 1,  expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn1: models.ProductType{},  srvReturn2: errs.NewUnexpectedError("")},
 	}
 
 	for _, tc := range cases {
@@ -170,8 +175,7 @@ func TestGetProductTypeByID(t *testing.T) {
 				prodTypeService.On("GetProductType", tc.insertSrv).Return(&tc.srvReturn1, tc.srvReturn2)
 			}
 
-			req := httptest.NewRequest(http.MethodPost, "/producttype/", nil)
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPost, EndpointPath, nil)
 
 			rec := httptest.NewRecorder()
 
@@ -228,10 +232,10 @@ func TestUpdateProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			param: "1", isValidate: false,  body: string(prodTypeReqJSON), 	  		insertId: 1, insertSrv: *prodTypeReqMock,   	 	expectedStatus: 200,	expectedBody: string(prodTypeResJSON), 			srvReturn1: *prodTypeServResMock, srvReturn2: nil},
-		{name: "test case : failed param int",  param: "a", isValidate: true, 	body: string(prodTypeReqJSON),			insertId: 1, insertSrv: *prodTypeReqMock,  			expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  	srvReturn1: models.ProductType{}, srvReturn2: nil},
-		{name: "test case : failed bind",  		param: "1", isValidate: true, 	body: string(prodTypeErrorReqJSON), 	insertId: 1, insertSrv: models.ProductTypeUpdate{}, expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,    	srvReturn1: models.ProductType{}, srvReturn2: nil},
-		{name: "test case : failed service", 	param: "1", isValidate: false,  body: string(prodTypeReqJSON), 	  		insertId: 1, insertSrv: *prodTypeReqMock,			expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	  	srvReturn1: models.ProductType{}, srvReturn2: errs.NewUnexpectedError("")},
+		{name: "test case : update pass",    			param: "1", isValidate: false,  body: string(prodTypeReqJSON), 	  		insertId: 1, insertSrv: *prodTypeReqMock,   	 	expectedStatus: 200,	expectedBody: string(prodTypeResJSON), 			srvReturn1: *prodTypeServResMock, srvReturn2: nil},
+		{name: "test case : update failed param int",   param: "a", isValidate: true, 	body: string(prodTypeReqJSON),			insertId: 1, insertSrv: *prodTypeReqMock,  			expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  	srvReturn1: models.ProductType{}, srvReturn2: nil},
+		{name: "test case : update failed bind",  		param: "1", isValidate: true, 	body: string(prodTypeErrorReqJSON), 	insertId: 1, insertSrv: models.ProductTypeUpdate{}, expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,    	srvReturn1: models.ProductType{}, srvReturn2: nil},
+		{name: "test case : update failed service", 	param: "1", isValidate: false,  body: string(prodTypeReqJSON), 	  		insertId: 1, insertSrv: *prodTypeReqMock,			expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	  	srvReturn1: models.ProductType{}, srvReturn2: errs.NewUnexpectedError("")},
 	}
 
 	for _, tc := range cases {
@@ -241,8 +245,8 @@ func TestUpdateProductTypeByID(t *testing.T) {
 				prodTypeService.On("UpdateProductType", tc.insertId, &tc.insertSrv).Return(&tc.srvReturn1, tc.srvReturn2)
 			}
 
-			req := httptest.NewRequest(http.MethodPut, "/producttype/", strings.NewReader(tc.body))
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodPut, EndpointPath, strings.NewReader(tc.body))
+			req.Header.Set(ContentType, Application)
 
 			rec := httptest.NewRecorder()
 
@@ -285,9 +289,9 @@ func TestDeleteProductTypeByID(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{name: "test case : pass",    			param: "1", isValidate: false,  insertId: 1, expectedStatus: 200,	expectedBody: string(prodTypeResJSON),		srvReturn: nil},
-		{name: "test case : failed param int",  param: "a", isValidate: true, 	insertId: 0, expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  srvReturn: nil},
-		{name: "test case : failed service", 	param: "1", isValidate: false,  insertId: 1, expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn: errs.NewUnexpectedError("")},
+		{name: "test case : delete pass",    			param: "1", isValidate: false,  insertId: 1, expectedStatus: 200,	expectedBody: string(prodTypeResJSON),		srvReturn: nil},
+		{name: "test case : delete failed param int",  param: "a", isValidate: true, 	insertId: 0, expectedStatus: 400,	expectedBody: `{"code":400,"message":""}`,  srvReturn: nil},
+		{name: "test case : delete failed service", 	param: "1", isValidate: false,  insertId: 1, expectedStatus: 500,	expectedBody: `{"code":500,"message":""}`,	srvReturn: errs.NewUnexpectedError("")},
 	}
 
 	for _, tc := range cases {
@@ -297,8 +301,7 @@ func TestDeleteProductTypeByID(t *testing.T) {
 				prodTypeService.On("DeleteProductType", tc.insertId).Return(tc.srvReturn)
 			}
 
-			req := httptest.NewRequest(http.MethodDelete, "/prodTypeuct/", nil)
-			req.Header.Set("Content-Type", "application/json")
+			req := httptest.NewRequest(http.MethodDelete, EndpointPath, nil)
 
 			rec := httptest.NewRecorder()
 
@@ -330,8 +333,8 @@ func TestGetProductTypeCount(t *testing.T) {
 	
 	prodTypeResJSON, _ := json.Marshal(prodTypeServResMock)
 
-    t.Run("test case : pass", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/count", nil)
+    t.Run("test case : get count pass", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, EndpointPath + "/count", nil)
 
 		rec := httptest.NewRecorder()
 
@@ -351,8 +354,8 @@ func TestGetProductTypeCount(t *testing.T) {
 		prodTypeService.AssertExpectations(t)
 	})
 
-	t.Run("test case : fail repository", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/count", nil)
+	t.Run("test case : get count fail repository", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, EndpointPath + "/count", nil)
 
 		rec := httptest.NewRecorder()
 

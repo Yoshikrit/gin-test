@@ -14,16 +14,22 @@ import (
 	"gin-test/utils/errs"
 )
 
+const (
+	StubDBConnectionErrMsg = "an error '%s' was not expected when opening a stub database connection"
+	GormDBErrMsg           = "an error '%s' was not expected when opening a gorm database"
+)
+
+
 func TestCreate(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
 	prodTypeCreateMock := &models.ProductTypeCreate{
@@ -46,7 +52,7 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, expectedRes, err)
 	})
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : create pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -63,7 +69,7 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, expectedRes, result)
 	})
 
-	t.Run("test case : fail create", func(t *testing.T) {
+	t.Run("test case : create fail create", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectBegin()
@@ -83,13 +89,13 @@ func TestCreate(t *testing.T) {
 func TestGetAll(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
 	entityRes := []models.ProductTypeEntity{
@@ -102,7 +108,7 @@ func TestGetAll(t *testing.T) {
 			Name: "B",
 		},
 	}
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get all pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A").AddRow(2, "B")
@@ -115,7 +121,7 @@ func TestGetAll(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRes, result)
 	})
-	t.Run("test case : fail", func(t *testing.T) {
+	t.Run("test case : get all fail", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(`SELECT \* FROM "producttype"`).
@@ -132,20 +138,20 @@ func TestGetAll(t *testing.T) {
 func TestGetById(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
 	entityRes := &models.ProductTypeEntity{
 		Id:   1,
 		Name: "A",
 	}
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -158,7 +164,7 @@ func TestGetById(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRes, result)
 	})
-	t.Run("test case : fail gorm not found", func(t *testing.T) {
+	t.Run("test case : get fail gorm not found", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(`SELECT \* FROM "producttype" WHERE`).
@@ -171,7 +177,7 @@ func TestGetById(t *testing.T) {
 		assert.Equal(t, expectedRes, err)
 	})
 
-	t.Run("test case : fail get id", func(t *testing.T) {
+	t.Run("test case : get fail get id", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(`SELECT \* FROM "producttype" WHERE`).
@@ -188,13 +194,13 @@ func TestGetById(t *testing.T) {
 func TestUpdate(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
 	prodTypeUpdateMock := &models.ProductTypeUpdate{
@@ -214,7 +220,7 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, expectedRes, err)
 	})
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : update pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -234,7 +240,7 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, expectedRes, result)
 	})
 	
-	t.Run("test case : fail update", func(t *testing.T) {
+	t.Run("test case : update fail update", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -258,16 +264,16 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
-	t.Run("test case : fail no id", func(t *testing.T) {
+	t.Run("test case : delete fail no id", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(`SELECT \* FROM "producttype"`).
@@ -280,7 +286,7 @@ func TestDelete(t *testing.T) {
 		assert.Equal(t, expectedRes, err)
 	})
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : delete pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -297,7 +303,7 @@ func TestDelete(t *testing.T) {
 
 		assert.NoError(t, err)
 	})
-	t.Run("test case : fail cant delete", func(t *testing.T) {
+	t.Run("test case : delete fail cant delete", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 		rows := sqlmock.NewRows([]string{"Id", "Name"}).AddRow(1, "A")
 
@@ -321,16 +327,16 @@ func TestDelete(t *testing.T) {
 func TestGetCount(t *testing.T) {
 	mockDb, mock, err := sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		t.Fatalf(StubDBConnectionErrMsg, err)
 	}
 	defer mockDb.Close()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{Conn: mockDb}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a gorm database", err)
+		t.Fatalf(GormDBErrMsg, err)
 	}
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get count pass", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(regexp.QuoteMeta(`SELECT count(*) FROM "producttype"`)).
@@ -342,7 +348,7 @@ func TestGetCount(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRes, result)
 	})
-	t.Run("test case : fail", func(t *testing.T) {
+	t.Run("test case : get count fail", func(t *testing.T) {
 		repo := repositories.NewProductTypeRepositoryDB(db)
 
 		mock.ExpectQuery(regexp.QuoteMeta(`SELECT count(*) FROM "producttype"`)).

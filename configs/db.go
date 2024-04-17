@@ -1,15 +1,16 @@
 package configs
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strconv"
-	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	
+	// "time"
+	// "context"
+	// "gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -44,14 +45,14 @@ func portConv(s string) int {
 	return i
 }
 
-type SqlLogger struct {
-	logger.Interface
-}
+// type SqlLogger struct {
+// 	logger.Interface
+// }
 
-func (l SqlLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
+// func (l SqlLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
 	// sql, _ := fc()
 	// fmt.Printf("%v\n==============================\n", sql)
-}
+// }
 
 func DatabaseInit() {
 	cfg := getConfig()
@@ -60,7 +61,7 @@ func DatabaseInit() {
 		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port)
 	
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: &SqlLogger{}, // check sql with log
+		// Logger: &SqlLogger{}, // check sql with log
 	})
 	if err != nil {
 		panic(fmt.Sprintf("Failed to connect to database: %v", err))

@@ -27,7 +27,7 @@ func TestCreateProductType(t *testing.T) {
 		Name: "A",
 	}
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : create pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("Create", prodTypeReqMock).Return(prodTypeFromDBMock, nil)
 
@@ -49,9 +49,9 @@ func TestCreateProductType(t *testing.T) {
 		err 			error
 	}
 	cases := []testCase{
-		{test_name: "test case : fail no id",   	isNull: true, 	id: 0, name: "",    err: errs.NewBadRequestError("ProductType's Id is null")},
-		{test_name: "test case : fail no name", 	isNull: true, 	id: 1, name:  "",   err: errs.NewBadRequestError("ProductType's Name is null")},
-		{test_name: "test case : fail repository", 	isNull: false, id: 1, name:  "A",  err: errors.New("")},
+		{test_name: "test case : create fail no id",   	isNull: true, 	id: 0, name: "",    err: errs.NewBadRequestError("ProductType's Id is null")},
+		{test_name: "test case : create fail no name", 	isNull: true, 	id: 1, name:  "",   err: errs.NewBadRequestError("ProductType's Name is null")},
+		{test_name: "test case : create fail repository", 	isNull: false, id: 1, name:  "A",  err: errors.New("")},
 	}
 
 	for _, tc := range cases {
@@ -103,7 +103,7 @@ func TestGetProductTypes(t *testing.T) {
 		},
 	}
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get all pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetAll").Return(prodTypesDBMock, nil)
 
@@ -116,7 +116,7 @@ func TestGetProductTypes(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("test case : repository error", func(t *testing.T) {
+	t.Run("test case : get all repository error", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetAll").Return([]models.ProductTypeEntity{}, errors.New(""))
 
@@ -142,7 +142,7 @@ func TestGetProductType(t *testing.T) {
 		Name: "A",
 	}
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetById", 1).Return(prodTypeDBMock, nil)
 
@@ -155,7 +155,7 @@ func TestGetProductType(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("test case : repository error", func(t *testing.T) {
+	t.Run("test case : get repository error", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetById", 1).Return(&models.ProductTypeEntity{}, errors.New(""))
 
@@ -184,7 +184,7 @@ func TestUpdateProductType(t *testing.T) {
 		Name: "B",
 	}
 
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : update pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("Update", 1, prodTypeReqMock).Return(prodTypeDBMock, nil)
 
@@ -204,8 +204,8 @@ func TestUpdateProductType(t *testing.T) {
 		err 			error
 	}
 	cases := []testCase{
-		{test_name: "test case : fail no name",  	isNull: true, 	name:  "",   err: errs.NewBadRequestError("ProductType's Name is null")},
-		{test_name: "test case : fail repository",  isNull: false, 	name:  "B",  err: errors.New("")},
+		{test_name: "test case : update fail no name",  	isNull: true, 	name:  "",   err: errs.NewBadRequestError("ProductType's Name is null")},
+		{test_name: "test case : update fail repository",  isNull: false, 	name:  "B",  err: errors.New("")},
 	}
 
 	for _, tc := range cases {
@@ -234,7 +234,7 @@ func TestUpdateProductType(t *testing.T) {
 }
 
 func TestDeleteProductType(t *testing.T) {
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : delete pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("DeleteById", 1).Return(nil)
 
@@ -246,7 +246,7 @@ func TestDeleteProductType(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("test case : repository error", func(t *testing.T) {
+	t.Run("test case : delete repository error", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("DeleteById", 1).Return(errors.New(""))
 
@@ -260,7 +260,7 @@ func TestDeleteProductType(t *testing.T) {
 }
 
 func TestGetProductTypeCount(t *testing.T) {
-	t.Run("test case : pass", func(t *testing.T) {
+	t.Run("test case : get count pass", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetCount").Return(int64(5), nil)
 
@@ -274,7 +274,7 @@ func TestGetProductTypeCount(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("test case : repository error", func(t *testing.T) {
+	t.Run("test case : get count repository error", func(t *testing.T) {
 		mockRepo := mock_repositories.NewProductTypeRepositoryMock()
 		mockRepo.On("GetCount").Return(int64(0), errors.New(""))
 
